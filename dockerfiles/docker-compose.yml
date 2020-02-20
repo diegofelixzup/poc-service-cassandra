@@ -1,0 +1,10 @@
+
+db:
+    image: cassandra
+    restart: always
+    expose:
+        - "9042"
+    ports: 
+        - "9042:9042"
+        - "7000:7000"
+        - "7001:7001"

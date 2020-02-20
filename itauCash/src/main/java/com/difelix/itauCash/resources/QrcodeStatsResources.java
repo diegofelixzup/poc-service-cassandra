@@ -41,14 +41,8 @@ public class QrcodeStatsResources {
 	
 	@GetMapping("/buscar/alias")
 	@ResponseStatus(value = HttpStatus.OK)
-	public Flux<QrcodeStats> buscarQrcodePorAlias(@RequestParam String alias) {
+	public Mono<QrcodeStats> buscarQrcodePorAlias(@RequestParam String alias) {
 		return service.buscarQrcodePorAlias(alias);
-	}
-	
-	@GetMapping("/buscar/id")
-	@ResponseStatus(value = HttpStatus.OK)
-	public Mono<QrcodeStats> buscarQrcodePorId(@RequestParam UUID id) {
-		return service.buscarQrcodePorId(id);
 	}
 	
 	public QrcodeStats converterDto(QrcodeStatsDto dto) {

@@ -1,21 +1,12 @@
 package com.difelix.itauCash.models;
 
-import java.util.UUID;
-
-import org.springframework.data.cassandra.core.cql.Ordering;
-import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
-import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 @Table
 public class QrcodeStats {
 	
-	@PrimaryKeyColumn(name = "id", type = PrimaryKeyType.CLUSTERED,
-			ordering = Ordering.DESCENDING, ordinal = 0)
-	private UUID id;
-	
-	@PrimaryKeyColumn(name = "alias", type = PrimaryKeyType.PARTITIONED, 
-			ordinal = 1)
+	@PrimaryKey
 	private String alias;
 	
 	private String url;
@@ -30,14 +21,6 @@ public class QrcodeStats {
 		this.alias = alias;
 		this.url = url;
 		this.value = value;
-	}
-
-	public UUID getId() {
-		return id;
-	}
-
-	public void setId(UUID id) {
-		this.id = id;
 	}
 
 	public String getAlias() {
@@ -66,9 +49,6 @@ public class QrcodeStats {
 
 	@Override
 	public String toString() {
-		return "QrcodeStats [id=" + id + ", alias=" + alias + ", url=" + url + ", value=" + value + "]";
+		return "QrcodeStats [alias=" + alias + ", url=" + url + ", value=" + value + "]";
 	}
-	
-	
-
 }
