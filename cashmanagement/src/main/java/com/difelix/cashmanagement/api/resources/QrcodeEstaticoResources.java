@@ -24,10 +24,10 @@ import com.difelix.cashmanagement.service.QrcodeEstaticoService;
 @RestController
 @RequestMapping("/qrcode/estatico")
 public class QrcodeEstaticoResources {
-	
+
 	@Autowired
 	QrcodeEstaticoService service;
-	
+
 	@PostMapping("/salvar")
 	public ResponseEntity salvarQrcodeEstatico(@RequestBody QrcodeEstaticoDto dto) {
 		try {
@@ -38,29 +38,29 @@ public class QrcodeEstaticoResources {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
+
 	@GetMapping("/buscar/chave")
 	public ResponseEntity buscarQrcodePorChave(@RequestParam String chave) {
 		List<QrcodeEstatico> qrcodes = service.listarTodosQrcodesDeUmaChave(chave);
 		return ResponseEntity.ok(qrcodes);
 	}
-	
+
 	@GetMapping("/buscar/status")
 	public ResponseEntity buscarQrcodePorStatus(@RequestParam String chave, @RequestParam String status) {
 		try {
-		   List<QrcodeEstatico> qrcodes = service.listarQrcodePorStatus(chave, status);
-		   return ResponseEntity.ok(qrcodes);
+			List<QrcodeEstatico> qrcodes = service.listarQrcodePorStatus(chave, status);
+			return ResponseEntity.ok(qrcodes);
 		} catch (QrcodeValoresException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
-		}	
+		}
 	}
-	
+
 	@GetMapping("/buscar/todos")
 	public ResponseEntity buscarTodosQrcode() {
 		Iterable<QrcodeEstatico> qrcodes = service.encontrarTodosQrcode();
 		return ResponseEntity.ok(qrcodes);
 	}
-	
+
 	@PutMapping("/atualizar/{id}")
 	public ResponseEntity atualizarQrcode(@PathVariable UUID id, @RequestBody QrcodeEstaticoDto dto) {
 		try {
@@ -71,24 +71,28 @@ public class QrcodeEstaticoResources {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
+
 	@DeleteMapping("/cancelar/{id}")
 	public ResponseEntity cancelarQrcode(@PathVariable UUID id) {
-		service.cancelarQrcode(id);
-		return ResponseEntity.ok().body("Qrcode Cancelado");
+		try {
+			service.cancelarQrcode(id);
+			return ResponseEntity.ok().body("Qrcode Cancelado");
+		} catch (QrcodeValoresException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
-	
+
 	public QrcodeEstatico converterDto(QrcodeEstaticoDto dto) {
 		QrcodeEstatico qrcode = new QrcodeEstatico();
-		
+
 		qrcode.setChaveAutenticacao(dto.getChave());
 		qrcode.setReferencia(dto.getReferencia());
 		qrcode.setValor(dto.getValor());
-		
+
 		if (dto.getStatus() != null) {
 			qrcode.setStatus(dto.getStatus());
 		}
-		
+
 		return qrcode;
 	}
 

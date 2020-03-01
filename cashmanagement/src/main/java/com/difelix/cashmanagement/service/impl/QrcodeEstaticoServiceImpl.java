@@ -70,19 +70,15 @@ public class QrcodeEstaticoServiceImpl implements QrcodeEstaticoService {
 	
 	@Override
 	public void cancelarQrcode(UUID id) {
-		repository.findById(id).ifPresent(qrcode -> {
+		repository.findById(id).ifPresentOrElse(qrcode -> {
 			qrcode.setStatus(QrcodeStatus.CANCELADO.name());
 			repository.save(qrcode);
-		});	
+		}, () -> { throw new QrcodeValoresException("Id informado não existe"); });
 	}
 	
 	public void validarQrcode(QrcodeEstatico qrcode) {		
 		if (qrcode.getChaveAutenticacao() == null || qrcode.getChaveAutenticacao().isEmpty()) {
 			throw new QrcodeValoresException("Chave de autenticação não pode ser nula ou vazia");
-		}
-		
-		if (qrcode.getValor() == null) {
-			throw new QrcodeValoresException("Valor não pode ser nulo");
 		}
 	}
 	
